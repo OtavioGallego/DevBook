@@ -1,0 +1,20 @@
+{{ define "modal-seguindo" }}
+<div class="modal fade" id="modal-seguindo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Seguindo</h2>
+            </div>
+            <div class="modal-body">
+                {{ range .Seguindo }}
+                    <a href="/usuarios/{{ .ID }}">{{ .Nick }}</a> <br/>
+                {{ else }}
+                    <p class="text-muted text-center">
+                        Não está seguindo ninguém por enquanto...
+                    </p>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}

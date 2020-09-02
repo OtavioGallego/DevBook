@@ -1,0 +1,94 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBook - {{ .Usuario.Nome }} </title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    {{ template "cabecalho" }}
+
+    {{ $SeguidoPeloUsuarioLogado := false }}
+    {{ range .Usuario.Seguidores }}
+    {{ if (eq .ID $.UsuarioLogadoID )}}
+    {{ $SeguidoPeloUsuarioLogado = true}}
+    {{ end }}
+    {{ end }}
+
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Perfil do Usuário</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{ .Usuario.Nome }} - {{ .Usuario.Nick }} - Membro Desde:
+                            {{ .Usuario.CriadoEm.Format "02/01/2006" }}
+                        </h6>
+
+                        <p class="card-text">
+                            <a href="#" data-toggle="modal" data-target="#modal-seguidores">
+                                Seguidores: {{ len .Usuario.Seguidores }}
+                            </a>
+                        </p>
+                        <p class="card-text" data-toggle="modal" data-target="#modal-seguindo">
+                            <a href="#">
+                                Seguindo: {{ len .Usuario.Seguindo }}
+                            </a>
+                        </p>
+
+
+                        <a href="#" class="card-link">
+                            {{ if $SeguidoPeloUsuarioLogado }}
+                            <button id="parar-de-seguir" class="btn btn-info" data-usuario-id="{{ .Usuario.ID }}">
+                                Parar de Seguir
+                            </button>
+
+                            {{ else }}
+
+                            <button id="seguir" class="btn btn-info" data-usuario-id="{{ .Usuario.ID }}">
+                                Seguir
+                            </button>
+
+                            {{ end }}
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"> Publicações do Usuário {{ .Usuario.Nick }}</h5>
+                        <p class="card-text">
+                            {{ range .Usuario.Publicacoes }}
+                            {{ template "publicacao-sem-permissao" . }}
+                            {{ else }}
+                        <p class="text-muted text-center">
+                            Nenhuma publicação por enquanto...
+                        </p>
+                        {{ end }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{ template "modal-seguidores" .Usuario }}
+    {{ template "modal-seguindo" .Usuario }}
+    
+    {{ template "rodape" }}
+    {{ template "scripts" }}
+
+    <script src="/assets/js/publicacoes.js"></script>
+    <script src="/assets/js/usuario.js"></script>
+</body>
+
+</html>

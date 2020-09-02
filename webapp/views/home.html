@@ -1,0 +1,55 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBook</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    {{ template "cabecalho" }}
+
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                <h3>Nova Publicação</h3>
+                <fieldset>
+                    <form id="nova-publicacao">
+                        <div class="form-group">
+                            <label for="titulo">Título</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" required="required"
+                                placeholder="Insira o título da sua publicação">
+                        </div>
+                        <div class="form-group">
+                            <label for="conteudo">Conteúdo</label>
+                            <textarea class="form-control" id="conteudo" name="conteudo" required="required"
+                                placeholder="Insira o conteúdo da sua publicação"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" type="submit">
+                            Publicar
+                        </button>
+                    </form>
+                </fieldset>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                {{ range .Publicacoes }}
+                    {{ if (eq .AutorID $.UsuarioID) }}
+                        {{ template "publicacao-com-permissao" . }}
+                    {{ else }}
+                        {{ template "publicacao-sem-permissao" . }}
+                    {{ end }}
+                {{ end }}
+            </div>
+        </div>
+    </div>
+
+    {{ template "rodape" }}
+
+    {{ template "scripts"}}
+
+    <script src="/assets/js/publicacoes.js"></script>
+</body>
+
+</html>
