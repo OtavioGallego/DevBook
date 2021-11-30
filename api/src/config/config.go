@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -30,14 +29,9 @@ func Carregar() {
 
 	Porta, erro = strconv.Atoi(os.Getenv("API_PORT"))
 	if erro != nil {
-		Porta = 9000
+		Porta = 5000
 	}
 
-	StringConexaoBanco = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",
-		os.Getenv("DB_USUARIO"),
-		os.Getenv("DB_SENHA"),
-		os.Getenv("DB_NOME"),
-	)
-
+	StringConexaoBanco = "root:root@tcp(db:3306)/devbook"
 	SecretKey = []byte(os.Getenv("SECRET_KEY"))
 }
